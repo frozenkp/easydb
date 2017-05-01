@@ -7,6 +7,7 @@ import (
 	"labix.org/v2/mgo/bson"
 )
 
+// DbInfo is a object stored info of database.
 type DbInfo struct {
 	DbName string
 	URL    string
