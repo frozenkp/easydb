@@ -7,15 +7,15 @@ import (
 	"labix.org/v2/mgo/bson"
 )
 
-type dbInfo struct {
-	dbName string
+type DbInfo struct {
+	DbName string
 	URL    string
 }
 
 // New return a dbInfo object.
 // URL is 127.0.0.1:27017 in default.
-func New(dbName string, URL ...string) dbInfo {
-	newDB := dbInfo{dbName, "127.0.0.1:27017"}
+func New(dbName string, URL ...string) DbInfo {
+	newDB := DbInfo{dbName, "127.0.0.1:27017"}
 	if len(URL) != 0 {
 		newDB.URL = URL[0]
 	}
@@ -24,7 +24,7 @@ func New(dbName string, URL ...string) dbInfo {
 }
 
 // Get get specific data from database
-func (database dbInfo) Get(collName string, selector bson.M, dataSlicePtr interface{}) error {
+func (database DbInfo) Get(collName string, selector bson.M, dataSlicePtr interface{}) error {
 	session, err := mgo.Dial(database.URL)
 	if err != nil {
 		log.Print(err)
@@ -32,7 +32,7 @@ func (database dbInfo) Get(collName string, selector bson.M, dataSlicePtr interf
 	}
 	defer session.Close()
 
-	db := session.DB(database.dbName)
+	db := session.DB(database.DbName)
 	c := db.C(collName)
 
 	err = c.Find(selector).All(dataSlicePtr)
@@ -47,7 +47,7 @@ func (database dbInfo) Get(collName string, selector bson.M, dataSlicePtr interf
 }
 
 // Remove remove specific data.
-func (database dbInfo) Remove(collName string, selector bson.M) error {
+func (database DbInfo) Remove(collName string, selector bson.M) error {
 	session, err := mgo.Dial(database.URL)
 	if err != nil {
 		log.Print(err)
@@ -55,7 +55,7 @@ func (database dbInfo) Remove(collName string, selector bson.M) error {
 	}
 	defer session.Close()
 
-	db := session.DB(database.dbName)
+	db := session.DB(database.DbName)
 	c := db.C(collName)
 
 	err = c.Remove(selector)
@@ -70,7 +70,7 @@ func (database dbInfo) Remove(collName string, selector bson.M) error {
 }
 
 // Update update a specific data.
-func (database dbInfo) Update(collName string, selector, data bson.M) error {
+func (database DbInfo) Update(collName string, selector, data bson.M) error {
 	session, err := mgo.Dial(database.URL)
 	if err != nil {
 		log.Print(err)
@@ -78,7 +78,7 @@ func (database dbInfo) Update(collName string, selector, data bson.M) error {
 	}
 	defer session.Close()
 
-	db := session.DB(database.dbName)
+	db := session.DB(database.DbName)
 	c := db.C(collName)
 
 	err = c.Update(selector, data)
@@ -93,7 +93,7 @@ func (database dbInfo) Update(collName string, selector, data bson.M) error {
 }
 
 // Insert add a data to database.
-func (database dbInfo) Insert(collName string, dataPtr interface{}) error {
+func (database DbInfo) Insert(collName string, dataPtr interface{}) error {
 	session, err := mgo.Dial(database.URL)
 	if err != nil {
 		log.Print(err)
@@ -101,7 +101,7 @@ func (database dbInfo) Insert(collName string, dataPtr interface{}) error {
 	}
 	defer session.Close()
 
-	db := session.DB(database.dbName)
+	db := session.DB(database.DbName)
 	c := db.C(collName)
 
 	err = c.Insert(dataPtr)
