@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"gopkg.in/mgo.v2"
-	"labix.org/v2/mgo/bson"
+	"gopkg.in/mgo.v2/bson"
 )
 
 // DbInfo is a object stored info of database.
